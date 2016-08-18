@@ -1,0 +1,11 @@
+
+en:
+  admin:
+    actions:
+      export_to_xls:
+        title: "Export To Xls"
+        menu: "Export To Xls for %{model_label} '%{object_label}'"
+        breadcrumb: "Export To Xls"
+        link: "Export To Xls"
+        bulk_link: "Export To Xls selected %{model_label_plural}"
+        done: "Export To Xlsed"
