@@ -1,4 +1,5 @@
 require "rails_admin_export_to_xls/engine"
+require "rails_admin_export_to_xls/xls_converter"
 
 module RailsAdminExportToXls
 end
@@ -35,10 +36,11 @@ module RailsAdmin
             if format = params[:xls]
               request.format = format
               @objects = list_entries(@model_config, :export)
-              header, encoding, output = XLSConverter.new(@objects, @schema).to_xls(params[:csv_options])
+              @schema = HashHelper.symbolize(params[:schema]) if params[:schema]
+              header, encoding, output = RailsAdminExportToXls::XLSConverter.new(@objects, @schema).to_xls(params[:csv_options])
               if params[:send_data]
                 send_data output,
-                  type: "application/excel; charset=#{encoding}; #{'header=present' if header}",
+                  type: "application/vnd.ms-excel; charset=#{encoding}; #{'header=present' if header}",
                   disposition: "attachment; filename=#{params[:model_name]}_#{DateTime.now.strftime('%Y-%m-%d_%Hh%Mm%S')}.xls"
               else
                 render text: output
